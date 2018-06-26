@@ -1,5 +1,5 @@
-const reqResetGame = characterIndex => {
-  const url = `${__API_BASE__}/api/resetGame/`;
+const reqResetGame = currentCorrectCharacterIndex => {
+  const url = `${__API_BASE__}/api/resetGame/${currentCorrectCharacterIndex}`;
 
   return fetch(url)
     .then(res => res.json())

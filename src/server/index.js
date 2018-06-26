@@ -51,7 +51,7 @@ app.get("/", (req, res, next) => {
                   src: url(${starWarsFont}) format('truetype');
                 }
                 :root {
-                  font-family: 'Star Wars';
+                  font-family: 'Star Wars', fantasy;
                   height: 100%;
                 }
                 #app {
@@ -60,21 +60,13 @@ app.get("/", (req, res, next) => {
                   flex-flow: column;
                   align-items: center;
                   justify-content: flex-start;
+                  text-align: center;
                 }
                 body {
                   height: 100%;
                   background: #0d5aa0;
                   color: #fbfffe;
                   margin: 0;
-                }
-                .game-header {
-                  text-align: center;
-                }
-                .character {
-                  display: flex;
-                  flex-flow: column;
-                  align-items: center;
-                  margin-bottom: 30px;
                 }
                 .game-message {
                   color: #9e5960;
@@ -83,6 +75,7 @@ app.get("/", (req, res, next) => {
                 .hero-img {
                   display: grid;
                   width: 300px;
+                  margin-bottom: 20px;
                   z-index: 1;
                   border-radius: 5px;
                   box-shadow: -1px 1px 5px black;
@@ -120,6 +113,7 @@ app.get("/", (req, res, next) => {
                 .guess-form {
                   display: flex;
                   justify-content: center;
+                  align-items: center;
                   font-family: Helvetica, sans-serif;
                 }
                 .guess-form__item {
@@ -129,7 +123,7 @@ app.get("/", (req, res, next) => {
                   display: block;
                   background-color: #f0b084;
                   border-color: #f0b084;
-                  font-family: inherit;
+                  font-family: 'Star Wars', fantasy;
                   font-size: 1rem;
                   outline: none;
                   border-radius: 5px;
@@ -138,6 +132,15 @@ app.get("/", (req, res, next) => {
                 @keyframes spin {
                   from { transform: rotate(0deg); }
                   to { transform: rotate(359deg); }
+                }
+                @media screen and (max-width: 600px) {
+                  .guess-form {
+                    align-items: flex-start;
+                    flex-flow: column;
+                  }
+                  .next-btn {
+                    align-self: center;
+                  }
                 }
               </style>
             </head>
@@ -152,8 +155,11 @@ app.get("/", (req, res, next) => {
     .catch(next)
   });
 
-app.get('/api/resetGame/', (req, res, next) => {
-  const correctCharacter = CHARACTER_INDICES[randomInt(CHARACTER_INDICES.length - 1)];
+app.get('/api/resetGame/:currentCorrectCharacter', (req, res, next) => {
+  let correctCharacter;  
+  do {
+    correctCharacter = CHARACTER_INDICES[randomInt(CHARACTER_INDICES.length - 1)];
+  } while(correctCharacter == req.params.currentCorrectCharacter)
   resetGame(correctCharacter, fetchCharacterInfo)
     .then(optionsData => {
       res.json({
