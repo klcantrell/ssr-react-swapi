@@ -4,6 +4,7 @@ import React from "react";
 import { renderToString } from "react-dom/server";
 import serialize from "serialize-javascript";
 import App from '../shared/App';
+import resetGame from './resetGame';
 import { fetchCharacterInfo } from './api';
 import { randomInt, html } from '../shared/utils';
 import { CHARACTER_INDICES } from '../shared/characterIndices';
@@ -22,37 +23,14 @@ const INDEX_TO_IMGDATA_MAP = {
   '14': hansoloImg,
 };
 
-const SWAPI_PEOPLE_COUNT = 87;
-
 const app = express();
 
 app.use(cors());
 app.use(express.static("public"));
 
 app.get("/", (req, res, next) => {
-  let options = Array(4).fill();
   const correctCharacter = CHARACTER_INDICES[randomInt(CHARACTER_INDICES.length - 1)];
-  options[randomInt(3)] = correctCharacter;
-  options = options.reduce((acc, opt) => {
-    if (opt) {
-      acc.push(opt)
-      return acc;
-    } else {
-      let optValue;
-      do {
-        optValue = randomInt(SWAPI_PEOPLE_COUNT) + 1;
-      } while (acc.indexOf(optValue) !== -1)
-      acc.push(optValue);
-      return acc;
-    }
-  }, []);
-  Promise.all(options.map(opt => {
-    return fetchCharacterInfo(opt)
-      .then(resp => ({
-        name: resp.name,
-        id: opt,
-      }))
-  }))
+  resetGame(correctCharacter, fetchCharacterInfo)
     .then(optionsData => {
       const initialData = { correctCharacter, optionsData, questionImg: INDEX_TO_IMGDATA_MAP[correctCharacter] };
       const markup = renderToString(
@@ -78,6 +56,10 @@ app.get("/", (req, res, next) => {
                 }
                 #app {
                   height: 100%;
+                  display: flex;
+                  flex-flow: column;
+                  align-items: center;
+                  justify-content: flex-start;
                 }
                 body {
                   height: 100%;
@@ -85,11 +67,14 @@ app.get("/", (req, res, next) => {
                   color: #fbfffe;
                   margin: 0;
                 }
+                .game-header {
+                  text-align: center;
+                }
                 .character {
                   display: flex;
                   flex-flow: column;
                   align-items: center;
-                  height: 400px;
+                  margin-bottom: 30px;
                 }
                 .game-message {
                   color: #9e5960;
@@ -110,7 +95,7 @@ app.get("/", (req, res, next) => {
                   object-position: top center;
                   grid-row: 1 / -1;
                   grid-column: 1 / -1;
-                  transition: opacity 2s;
+                  transition: opacity 500ms;
                 }
                 .full {
                   width: 100%;
@@ -124,7 +109,7 @@ app.get("/", (req, res, next) => {
                   opacity: 0;
                 }
                 .loading-spinner {
-                  margin: auto;
+                  margin-top: 5%;
                   width: 64px;
                   height: 64px;
                   border: 4px rgba(0, 0, 0, .25) solid;
@@ -167,12 +152,14 @@ app.get("/", (req, res, next) => {
     .catch(next)
   });
 
-app.get('/api/getCharacter/:characterIndex', (req, res, next) => {
-  fetchRandomCharacter(req.params.characterIndex)
-    .then((resp) => {
+app.get('/api/resetGame/', (req, res, next) => {
+  const correctCharacter = CHARACTER_INDICES[randomInt(CHARACTER_INDICES.length - 1)];
+  resetGame(correctCharacter, fetchCharacterInfo)
+    .then(optionsData => {
       res.json({
-        character: resp,
-        imgData: INDEX_TO_IMGDATA_MAP[req.params.characterIndex],
+        correctCharacter, 
+        optionsData, 
+        questionImg: INDEX_TO_IMGDATA_MAP[correctCharacter],
       });
     })
     .catch(next);

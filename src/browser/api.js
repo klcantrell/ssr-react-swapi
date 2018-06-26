@@ -1,5 +1,5 @@
-const reqRandomCharacter = characterIndex => {
-  const url = `${__API_BASE__}/api/getCharacter/${characterIndex}`;
+const reqResetGame = characterIndex => {
+  const url = `${__API_BASE__}/api/resetGame/`;
 
   return fetch(url)
     .then(res => res.json())
@@ -10,4 +10,4 @@ const reqRandomCharacter = characterIndex => {
     });
 };
 
-export { reqRandomCharacter };
+export { reqResetGame };
