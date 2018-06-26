@@ -18,9 +18,13 @@ class Question extends Component {
   }
 
   handleSubmit = e => {
-    const { userChoice } = this.state;
     e.preventDefault();
-    this.props.handleGuess(userChoice);
+    this.props.handleGuess(this.state.userChoice);
+  }
+
+  handleNext = e => {
+    e.preventDefault();
+    this.props.handleNext();
   }
 
   render() {
