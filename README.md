@@ -1,3 +1,3 @@
 # Star Wars Character Guessing Game
 
-### May the force be with you
+### This is a Star Wars characters guessing game built in **React** and server side rendered
