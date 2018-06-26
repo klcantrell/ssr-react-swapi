@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import Character from './Character';
 import Question, { QUESTION_STATES } from './Question';
-import { reqRandomCharacter } from '../browser/api';
+import LoadingSpinner from './LoadingSpinner';
+import { reqResetGame } from '../browser/api';
 import { randomInt } from './utils';
 
 class App extends Component {
@@ -36,7 +37,22 @@ class App extends Component {
     })
   }
 
-  handleNext = () => {}
+  handleNext = () => {
+    this.setState({
+      imgLoaded: false,
+      dataLoaded: false,
+      questionState: QUESTION_STATES.QUESTION,
+    })
+    reqResetGame()
+      .then(({correctCharacter, optionsData, questionImg}) => {
+        this.setState({
+          correctCharacter,
+          optionsData,
+          questionImg,
+          dataLoaded: true,
+        })
+      });
+  }
 
   handleImgLoad = () => {
     this.setState({
@@ -48,18 +64,23 @@ class App extends Component {
     const { dataLoaded, imgLoaded, questionImg, optionsData, questionState } = this.state;
     return (
       <React.Fragment>
+        <h1 className="game-header">May the force be with you</h1>
         <Character
-          dataLoaded={dataLoaded}
           imgLoaded={imgLoaded}
           handleLoad={this.handleImgLoad}
           imgData={questionImg}
           questionState={questionState}
         />
-        <Question 
-          options={optionsData}
-          questionState={questionState}
-          handleGuess={this.handleGuess} 
-        />
+        {dataLoaded ? (
+          <Question 
+            options={optionsData}
+            questionState={questionState}
+            handleGuess={this.handleGuess}
+            handleNext={this.handleNext} 
+          />
+        ) : (
+          <LoadingSpinner />
+        )}
       </React.Fragment>
     );
   }
