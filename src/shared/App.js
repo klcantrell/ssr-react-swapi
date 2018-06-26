@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import Character from './Character';
-import Question, { QUESTION_STATES } from './Question';
+import Game from './Game';
+import { QUESTION_STATES } from './Question';
 import LoadingSpinner from './LoadingSpinner';
 import { reqResetGame } from '../browser/api';
 import { randomInt } from './utils';
@@ -9,7 +9,8 @@ class App extends Component {
   state = { 
     ...this.initializeState(this.props.data),
     imgLoaded: false,
-    dataLoaded: false,
+    serverDataLoaded: false,
+    ajaxDataLoaded: 'initial',
     questionState: QUESTION_STATES.QUESTION,
   };
 
@@ -23,7 +24,7 @@ class App extends Component {
 
   componentDidMount() {
     this.setState({
-      dataLoaded: true,
+      serverDataLoaded: true,
     })
   }
 
@@ -38,18 +39,19 @@ class App extends Component {
   }
 
   handleNext = () => {
+    const { correctCharacter } = this.state;
     this.setState({
       imgLoaded: false,
-      dataLoaded: false,
+      ajaxDataLoaded: false,
       questionState: QUESTION_STATES.QUESTION,
     })
-    reqResetGame()
+    reqResetGame(correctCharacter)
       .then(({correctCharacter, optionsData, questionImg}) => {
         this.setState({
           correctCharacter,
           optionsData,
           questionImg,
-          dataLoaded: true,
+          ajaxDataLoaded: true,
         })
       });
   }
@@ -61,22 +63,27 @@ class App extends Component {
   };
 
   render() {
-    const { dataLoaded, imgLoaded, questionImg, optionsData, questionState } = this.state;
+    const { 
+      ajaxDataLoaded,
+      serverDataLoaded,
+      imgLoaded,
+      questionImg,
+      optionsData,
+      questionState } = this.state;
+
     return (
       <React.Fragment>
-        <h1 className="game-header">May the force be with you</h1>
-        <Character
-          imgLoaded={imgLoaded}
-          handleLoad={this.handleImgLoad}
-          imgData={questionImg}
-          questionState={questionState}
-        />
-        {dataLoaded ? (
-          <Question 
-            options={optionsData}
+        <h1>May the force be with you</h1>
+        {ajaxDataLoaded ? (
+          <Game 
+            serverDataLoaded={serverDataLoaded}
             questionState={questionState}
+            questionImg={questionImg}
+            optionsData={optionsData}
+            imgLoaded={imgLoaded}
+            handleImgLoad={this.handleImgLoad}
             handleGuess={this.handleGuess}
-            handleNext={this.handleNext} 
+            handleNext={this.handleNext}
           />
         ) : (
           <LoadingSpinner />
