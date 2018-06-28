@@ -155,22 +155,22 @@ app.get("/", (req, res, next) => {
     .catch(next)
   });
 
-app.get('/api/resetGame/:currentCorrectCharacter', (req, res, next) => {
-  let correctCharacter;  
-  do {
-    correctCharacter = CHARACTER_INDICES[randomInt(CHARACTER_INDICES.length - 1)];
-  } while(correctCharacter == req.params.currentCorrectCharacter)
-  resetGame(correctCharacter, fetchCharacterInfo)
-    .then(optionsData => {
-      res.json({
-        correctCharacter, 
-        optionsData, 
-        questionImg: INDEX_TO_IMGDATA_MAP[correctCharacter],
-      });
-    })
-    .catch(next);
-});
+  app.get('/api/resetGame/:currentCorrectCharacter?', (req, res, next) => {
+    let correctCharacter;  
+    do {
+      correctCharacter = CHARACTER_INDICES[randomInt(CHARACTER_INDICES.length - 1)];
+    } while(req.params.currentCorrectCharacter && correctCharacter == req.params.currentCorrectCharacter)
+    resetGame(correctCharacter, fetchCharacterInfo)
+      .then(optionsData => {
+        res.json({
+          correctCharacter, 
+          optionsData, 
+          questionImg: INDEX_TO_IMGDATA_MAP[correctCharacter],
+        });
+      })
+      .catch(next);
+  });
 
-app.listen(3000, () => {
-  console.log(`Server is listening on port: 3000`);
+  app.listen(3000, () => {
+    console.log(`Server is listening on port: 3000`);
 });
