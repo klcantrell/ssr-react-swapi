@@ -1,3 +1,5 @@
+import 'whatwg-fetch';
+import 'core-js/es6/promise';
 import React from 'react';
 import { hydrate } from 'react-dom';
 import App from '../shared/App';
