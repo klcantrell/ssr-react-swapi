@@ -3,6 +3,7 @@ import express from 'express';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import serialize from 'serialize-javascript';
+import { minify } from 'html-minifier';
 import App from '../shared/App';
 import resetGame from './resetGame';
 import { fetchCharacterInfo } from './api';
@@ -13,7 +14,6 @@ import leiaImg from '../images/leia.jpg';
 import obiwanImg from '../images/obi-wan.jpg';
 import anakinImg from '../images/anakin.jpg';
 import hansoloImg from '../images/han-solo.jpg';
-import starWarsFont from '../fonts/Starjedi.ttf';
 
 const INDEX_TO_IMGDATA_MAP = {
   '1': lukeImg,
@@ -35,8 +35,7 @@ app.get("/", (req, res, next) => {
       const markup = renderToString(
         <App data={initialData} />
       );
-
-      res.send(
+      const minifiedHtml = minify(
         html`
           <!DOCTYPE html>
           <html>
@@ -47,7 +46,7 @@ app.get("/", (req, res, next) => {
               <style>
                 @font-face {
                   font-family: 'Star Wars';
-                  src: url(${starWarsFont}) format('truetype');
+                  src: url('https://s3.us-east-2.amazonaws.com/kals-portfolio-assets/fonts/Starjedi.ttf') format('truetype');
                 }
                 :root {
                   font-family: 'Star Wars', fantasy;
@@ -148,10 +147,20 @@ app.get("/", (req, res, next) => {
               <div id="app">${markup}</div>
             </body>
           </html>
-        `
-      )
+        `,
+        {
+          removeAttributeQuotes: true,
+          collapseWhitespace: true,
+          html5: true,
+          minifyCSS: true,
+          removeComments: true,
+          removeEmptyAttributes: true,
+        }
+      );
+
+      res.send(minifiedHtml);
     })
-    .catch(next)
+    .catch(next);
   });
 
   app.get('/api/resetGame/:currentCorrectCharacter?', (req, res, next) => {

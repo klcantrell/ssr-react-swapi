@@ -1,5 +1,8 @@
 const path = require('path');
 const webpack = require('webpack');
+const CompressionPlugin = require('compression-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MinifyPlugin = require('babel-minify-webpack-plugin');
 
 const setupAPI = () => {
   switch(process.env.NODE_ENV) {
@@ -29,15 +32,42 @@ const browserConfig = {
     new webpack.DefinePlugin({
       __API_BASE__: setupAPI(),
     }),
-    // new CompressionPlugin({
-    //   asset: '[path].gz[query]',
-    //   algorithm: 'gzip',
-    //   test: /\.(ttf|woff)$/,
-    //   threshold: 10240,
-    //   minRatio: 0.8,
-    //   deleteOriginalAssets: true,
-    // }),
   ]
 };
+
+const htmlWebpackPlugin = process.env.NODE_ENV === 'production' ?
+  new HtmlWebpackPlugin({
+    template: path.join('src/index.html'),
+    inject: false,
+    minify: {
+      removeAttributeQuotes: true,
+      collapseWhitespace: true,
+      html5: true,
+      minifyCSS: true,
+      removeComments: true,
+      removeEmptyAttributes: true
+    }
+  }) :
+  new HtmlWebpackPlugin({
+    template: path.join('src/index.html'),
+    inject: false,
+  });
+
+if (process.env.NODE_ENV === 'production') {
+  browserConfig.plugins.push(
+    htmlWebpackPlugin,
+    new MinifyPlugin({}, {
+      exclude: /node_modules/
+    }),
+    new CompressionPlugin({
+      asset: '[path].gz[query]',
+      algorithm: 'gzip',
+      test: /\.js$/,
+      threshold: 10240,
+      minRatio: 0.8,
+      deleteOriginalAssets: true,
+    }),
+  );
+}
 
 module.exports = browserConfig;

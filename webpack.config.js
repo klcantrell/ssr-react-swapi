@@ -2,13 +2,15 @@ const path = require('path');
 const webpack = require('webpack');
 const nodeExternals = require('webpack-node-externals');
 const CompressionPlugin = require('compression-webpack-plugin');
+const MinifyPlugin = require("babel-minify-webpack-plugin");
+const ImageminPlugin = require('imagemin-webpack-plugin').default;
 
 const setupAPI = () => {
   switch(process.env.NODE_ENV) {
     case 'development':
       return '"http://localhost:3000"';
     case 'production':
-      return '"https://acbg7strld.execute-api.us-east-2.amazonaws.com/dev/"';
+      return '"https://acbg7strld.execute-api.us-east-2.amazonaws.com/dev"';
   }
 };
 
@@ -69,7 +71,19 @@ const serverConfig = {
       { 
         test: /\.(js)$/,
         exclude: /node_modules/,
-        use: 'babel-loader' 
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: [
+              'env',
+              'react'
+            ],
+            "plugins": [
+              "transform-object-rest-spread",
+              "transform-class-properties"
+            ]
+          }
+        }
       },
       {
         test: /\.(png|jpg|gif)$/,
@@ -91,7 +105,6 @@ const serverConfig = {
             name: '[name].[ext]',
             outputPath: 'public/',
             publicPath: serverPublicPath,
-            // publicPath: 'https://s3.us-east-2.amazonaws.com/kals-portfolio-assets/fonts/',
           },
         },
       },
@@ -101,15 +114,34 @@ const serverConfig = {
     new webpack.DefinePlugin({
       __STATIC_URL__: setupStaticUrl(),
     })
-    // new CompressionPlugin({
-    //   asset: '[path].gz[query]',
-    //   algorithm: 'gzip',
-    //   test: /\.(ttf|woff)$/,
-    //   threshold: 10240,
-    //   minRatio: 0.8,
-    //   deleteOriginalAssets: true,
-    // }),
   ],
 };
+
+if (process.env.NODE_ENV === 'production') {
+  browserConfig.plugins.push(
+    new MinifyPlugin({}, {
+      exclude: /node_modules/
+    }),
+    new CompressionPlugin({
+      asset: '[path].gz[query]',
+      algorithm: 'gzip',
+      test: /\.js$/,
+      threshold: 10240,
+      minRatio: 0.8,
+      deleteOriginalAssets: true,
+    }),
+  );
+  serverConfig.plugins.push(
+    new CompressionPlugin({
+      asset: '[path].gz[query]',
+      algorithm: 'gzip',
+      test: /\.(ttf|woff)$/,
+      threshold: 10240,
+      minRatio: 0.8,
+      deleteOriginalAssets: true,
+    }),
+    new ImageminPlugin({test: /\.(png|jpg|gif)$/}),
+  );
+}
 
 module.exports = [browserConfig, serverConfig]
