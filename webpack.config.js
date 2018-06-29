@@ -140,6 +140,9 @@ if (process.env.NODE_ENV === 'production') {
       minRatio: 0.8,
       deleteOriginalAssets: true,
     }),
+    new MinifyPlugin({}, {
+      exclude: /node_modules/
+    }),
     new ImageminPlugin({test: /\.(png|jpg|gif)$/}),
   );
 }
