@@ -25,7 +25,7 @@ const INDEX_TO_IMGDATA_MAP = {
 
 const app = express();
 
-// app.use(express.static("public"));
+app.use(express.static("public"));
 
 app.get("/", (req, res, next) => {
   const correctCharacter = CHARACTER_INDICES[randomInt(CHARACTER_INDICES.length - 1)];
@@ -52,6 +52,12 @@ app.get("/", (req, res, next) => {
                   font-family: 'Star Wars', fantasy;
                   height: 100%;
                 }
+                body {
+                  height: 100%;
+                  background: #0d5aa0;
+                  color: #fbfffe;
+                  margin: 0;
+                }
                 #app {
                   height: 100%;
                   display: flex;
@@ -60,41 +66,50 @@ app.get("/", (req, res, next) => {
                   justify-content: flex-start;
                   text-align: center;
                 }
-                body {
-                  height: 100%;
-                  background: #0d5aa0;
-                  color: #fbfffe;
-                  margin: 0;
-                }
                 .game-message {
                   color: #9e5960;
                   text-shadow: 1px 1px black;
                 }
                 .hero-img {
+                  display: -ms-grid;
                   display: grid;
+                  -ms-grid-rows: 1fr;
+                  -ms-grid-columns: 1fr;
+                  grid-template-rows: 1fr;
+                  grid-template-columns: 1fr;
                   width: 300px;
+                  min-height: 0;
+                  max-height: 200px;
                   margin-bottom: 20px;
                   z-index: 1;
                   border-radius: 5px;
                   box-shadow: -1px 1px 5px black;
                   overflow: hidden;
                 }
-                .placeholder {
-                  width: 100%;
-                  height: 200px;
-                  object-fit: cover;
-                  object-position: top center;
+                .placeholder, .full {
+                  width: 100%
+                  -ms-grid-row: 1;
+                  -ms-grid-span: 1;
                   grid-row: 1 / -1;
+                  -ms-grid-column: 1;
+                  -ms-grid-span: 1;
                   grid-column: 1 / -1;
+                  -ms-grid-row-align: start;
+                }
+                .placeholder {
                   transition: opacity 500ms;
                 }
-                .full {
-                  width: 100%;
-                  height: 200px;
-                  object-fit: cover;
-                  object-position: top center;
-                  grid-row: 1 / -1;
-                  grid-column: 1 / -1;
+                @supports (object-fit: cover) {
+                  .hero-img {
+                    min-height: auto;
+                    max-height: auto;
+                  }
+                  .placeholder, .full {
+                    width: 100%;
+                    height: 200px;
+                    object-fit: cover;
+                    object-position: top center;
+                  }
                 }
                 .fadeOut {
                   opacity: 0;
@@ -183,8 +198,8 @@ app.get("/", (req, res, next) => {
       .catch(next);
   });
 
-// app.listen(3000, () => {
-//     console.log(`Server is listening on port: 3000`);
-// });
+app.listen(3000, () => {
+    console.log(`Server is listening on port: 3000`);
+});
 
 module.exports.handler = serverless(app);
