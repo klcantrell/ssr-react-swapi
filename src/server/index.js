@@ -1,8 +1,8 @@
-import express from "express";
-import cors from "cors";
-import React from "react";
-import { renderToString } from "react-dom/server";
-import serialize from "serialize-javascript";
+import serverless from 'serverless-http';
+import express from 'express';
+import React from 'react';
+import { renderToString } from 'react-dom/server';
+import serialize from 'serialize-javascript';
 import App from '../shared/App';
 import resetGame from './resetGame';
 import { fetchCharacterInfo } from './api';
@@ -25,8 +25,7 @@ const INDEX_TO_IMGDATA_MAP = {
 
 const app = express();
 
-app.use(cors());
-app.use(express.static("public"));
+// app.use(express.static("public"));
 
 app.get("/", (req, res, next) => {
   const correctCharacter = CHARACTER_INDICES[randomInt(CHARACTER_INDICES.length - 1)];
@@ -43,7 +42,7 @@ app.get("/", (req, res, next) => {
           <html>
             <head>
               <title>SSR with React and SWAPI</title>
-              <script src="/bundle.js" defer></script>
+              <script src="${__STATIC_URL__}bundle.js" defer></script>
               <script>window.__INITIAL_DATA__ = ${serialize(initialData)}</script>
               <style>
                 @font-face {
@@ -171,6 +170,8 @@ app.get("/", (req, res, next) => {
       .catch(next);
   });
 
-  app.listen(3000, () => {
-    console.log(`Server is listening on port: 3000`);
-});
+// app.listen(3000, () => {
+//     console.log(`Server is listening on port: 3000`);
+// });
+
+module.exports.handler = serverless(app);

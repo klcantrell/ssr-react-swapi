@@ -8,9 +8,29 @@ const setupAPI = () => {
     case 'development':
       return '"http://localhost:3000"';
     case 'production':
-      return '"sup"';
+      return '"https://acbg7strld.execute-api.us-east-2.amazonaws.com/dev/"';
   }
 };
+
+const setupServerPublicPath = () => {
+  switch(process.env.NODE_ENV) {
+    case 'development':
+      return '/';
+    case 'production':
+      return 'https://s3.us-east-2.amazonaws.com/kals-portfolio-assets/ssr-react-swapi/';
+  }
+};
+
+const setupStaticUrl = () => {
+  switch(process.env.NODE_ENV) {
+    case 'development':
+      return '"/"';
+    case 'production':
+      return '"https://s3.us-east-2.amazonaws.com/kals-portfolio-assets/ssr-react-swapi/"';
+  }
+};
+
+const serverPublicPath = setupServerPublicPath();
 
 const browserConfig = {
   entry: './src/browser/index.js',
@@ -41,11 +61,13 @@ const serverConfig = {
   output: {
     path: __dirname,
     filename: 'server.js',
-    publicPath: '/'
+    publicPath: serverPublicPath,
+    libraryTarget: 'commonjs2',
   },
   module: {
     rules: [
-      { test: /\.(js)$/,
+      { 
+        test: /\.(js)$/,
         exclude: /node_modules/,
         use: 'babel-loader' 
       },
@@ -68,7 +90,7 @@ const serverConfig = {
           options: {
             name: '[name].[ext]',
             outputPath: 'public/',
-            publicPath: '/',
+            publicPath: serverPublicPath,
             // publicPath: 'https://s3.us-east-2.amazonaws.com/kals-portfolio-assets/fonts/',
           },
         },
@@ -76,6 +98,9 @@ const serverConfig = {
     ]
   },
   plugins: [
+    new webpack.DefinePlugin({
+      __STATIC_URL__: setupStaticUrl(),
+    })
     // new CompressionPlugin({
     //   asset: '[path].gz[query]',
     //   algorithm: 'gzip',
