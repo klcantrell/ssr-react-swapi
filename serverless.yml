@@ -11,4 +11,6 @@ functions:
     handler: server.handler
     events:
       - http: ANY /
+        cors: true
       - http: 'ANY {proxy+}'
+        cors: true

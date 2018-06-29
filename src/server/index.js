@@ -161,11 +161,15 @@ app.get("/", (req, res, next) => {
     } while(req.params.currentCorrectCharacter && correctCharacter == req.params.currentCorrectCharacter)
     resetGame(correctCharacter, fetchCharacterInfo)
       .then(optionsData => {
-        res.json({
-          correctCharacter, 
-          optionsData, 
-          questionImg: INDEX_TO_IMGDATA_MAP[correctCharacter],
-        });
+        res
+          .set({
+            "Access-Control-Allow-Origin" : "*",
+          })
+          .json({
+            correctCharacter, 
+            optionsData, 
+            questionImg: INDEX_TO_IMGDATA_MAP[correctCharacter],
+          });
       })
       .catch(next);
   });
