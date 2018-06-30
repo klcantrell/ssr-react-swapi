@@ -15,21 +15,24 @@
       font-family: 'Star Wars', fantasy;
       height: 100%;
     }
-    #app {
-      height: 100%;
-      display: flex;
-      flex-flow: column;
-      align-items: center;
-      justify-content: flex-start;
-      text-align: center;
-    }
     body {
       height: 100%;
       background: #0d5aa0;
       color: #fbfffe;
       margin: 0;
     }
+    #app {
+      display: flex;
+      flex-flow: column;
+      align-items: center;
+      justify-content: flex-start;
+      text-align: center;
+    }
+    .game-header {
+      width: 100%;
+    }
     .game-message {
+      width: 100%;
       color: #9e5960;
       text-shadow: 1px 1px black;
     }
@@ -50,7 +53,7 @@
       overflow: hidden;
     }
     .placeholder, .full {
-      width: 100%
+      width: 100%;
       -ms-grid-row: 1;
       -ms-grid-span: 1;
       grid-row: 1 / -1;
@@ -64,8 +67,8 @@
     }
     @supports (object-fit: cover) {
       .hero-img {
-        min-height: auto;
-        max-height: auto;
+        min-height: initial;
+        max-height: initial;
       }
       .placeholder, .full {
         width: 100%;

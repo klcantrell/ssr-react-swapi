@@ -25,7 +25,7 @@ const INDEX_TO_IMGDATA_MAP = {
 
 const app = express();
 
-app.use(express.static("public"));
+// app.use(express.static("public"));
 
 app.get("/", (req, res, next) => {
   const correctCharacter = CHARACTER_INDICES[randomInt(CHARACTER_INDICES.length - 1)];
@@ -40,6 +40,9 @@ app.get("/", (req, res, next) => {
           <!DOCTYPE html>
           <html>
             <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <meta http-equiv="X-UA-Compatible" content="ie=edge">
               <title>SSR with React and SWAPI</title>
               <script src="${__STATIC_URL__}bundle.js" defer></script>
               <script>window.__INITIAL_DATA__ = ${serialize(initialData)}</script>
@@ -59,14 +62,17 @@ app.get("/", (req, res, next) => {
                   margin: 0;
                 }
                 #app {
-                  height: 100%;
                   display: flex;
                   flex-flow: column;
                   align-items: center;
                   justify-content: flex-start;
                   text-align: center;
                 }
+                .game-header {
+                  width: 100%;
+                }
                 .game-message {
+                  width: 100%;
                   color: #9e5960;
                   text-shadow: 1px 1px black;
                 }
@@ -101,8 +107,8 @@ app.get("/", (req, res, next) => {
                 }
                 @supports (object-fit: cover) {
                   .hero-img {
-                    min-height: auto;
-                    max-height: auto;
+                    min-height: initial;
+                    max-height: initial;
                   }
                   .placeholder, .full {
                     width: 100%;
@@ -198,8 +204,8 @@ app.get("/", (req, res, next) => {
       .catch(next);
   });
 
-app.listen(3000, () => {
-    console.log(`Server is listening on port: 3000`);
-});
+// app.listen(3000, () => {
+//     console.log(`Server is listening on port: 3000`);
+// });
 
 module.exports.handler = serverless(app);

@@ -72,7 +72,7 @@ class App extends Component {
 
     return (
       <React.Fragment>
-        <h1>May the force be with you</h1>
+        <h1 className="game-header">May the force be with you</h1>
         {ajaxDataLoaded ? (
           <Game 
             initialDataLoaded={initialDataLoaded}
