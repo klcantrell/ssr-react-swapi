@@ -13,7 +13,7 @@ const resetGame = (correctCharacter, fetchMethod) => {
       let optValue;
       do {
         optValue = randomInt(SWAPI_PEOPLE_COUNT) + 1;
-      } while (acc.indexOf(optValue) !== -1 && optValue !== correctCharacter)
+      } while (acc.indexOf(optValue) !== -1 || optValue == correctCharacter)
       acc.push(optValue);
       return acc;
     }
