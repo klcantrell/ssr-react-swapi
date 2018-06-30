@@ -52,6 +52,7 @@ app.get("/", (req, res, next) => {
                   src: url('https://s3.us-east-2.amazonaws.com/kals-portfolio-assets/fonts/Starjedi.ttf') format('truetype');
                 }
                 :root {
+                  font-size: 18px;
                   font-family: 'Star Wars', fantasy;
                   height: 100%;
                 }
@@ -69,10 +70,18 @@ app.get("/", (req, res, next) => {
                   text-align: center;
                 }
                 .game-header {
+                  font-size: 1.6rem;
                   width: 100%;
+                  margin-bottom: 0;
                 }
                 .game-message {
+                  font-size: 1.3rem;
                   width: 100%;
+                  height: 80px;
+                  margin: 0;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
                   color: #9e5960;
                   text-shadow: 1px 1px black;
                 }
@@ -153,6 +162,9 @@ app.get("/", (req, res, next) => {
                   to { transform: rotate(359deg); }
                 }
                 @media screen and (max-width: 600px) {
+                  :root {
+                    font-size: 16px;
+                  }
                   .guess-form {
                     align-items: flex-start;
                     flex-flow: column;

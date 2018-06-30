@@ -10,7 +10,7 @@ class Question extends Component {
   state = {
     userChoice: undefined,
   }
- 
+
   handleChange = e => {
     this.setState({
       userChoice: Number(e.target.value),
