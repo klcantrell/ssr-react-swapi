@@ -14,6 +14,16 @@ import leiaImg from '../images/leia.jpg';
 import obiwanImg from '../images/obi-wan.jpg';
 import anakinImg from '../images/anakin.jpg';
 import hansoloImg from '../images/han-solo.jpg';
+import yodaImg from '../images/yoda.jpg';
+import bobafettImg from '../images/boba-fett.jpg';
+import quigonImg from '../images/qui-gon.jpg';
+import padmeImg from '../images/padme.jpg';
+import darthmaulImg from '../images/darth-maul.jpg';
+import finnImg from '../images/finn.jpg';
+import reyImg from '../images/rey.jpg';
+import poeImg from '../images/poe.jpg';
+import bb8Img from '../images/bb8.jpg';
+import phasmaImg from '../images/captain-phasma.jpg';
 
 const INDEX_TO_IMGDATA_MAP = {
   '1': lukeImg,
@@ -21,6 +31,16 @@ const INDEX_TO_IMGDATA_MAP = {
   '10': obiwanImg,
   '11': anakinImg,
   '14': hansoloImg,
+  '20': yodaImg,
+  '22': bobafettImg,
+  '32': quigonImg,
+  '35': padmeImg,
+  '44': darthmaulImg,
+  '84': finnImg,
+  '85': reyImg,
+  '86': poeImg,
+  '87': bb8Img,
+  '88': phasmaImg,
 };
 
 const app = express();
