@@ -4,7 +4,7 @@ provider:
   name: aws
   runtime: nodejs8.10
   stage: dev
-  region: us-east-2
+  region: us-east-1
 
 functions:
   app:
@@ -14,3 +14,13 @@ functions:
         cors: true
       - http: 'ANY {proxy+}'
         cors: true
+plugins:
+  - serverless-domain-manager
+
+custom:
+  customDomain:
+    domainName: swguesswho.kalalau-cantrell.me
+    basePath: ''
+    stage: ${self:provider.stage}
+    createRoute53Record: true
+    certificateName: '*.kalalau-cantrell.me'
