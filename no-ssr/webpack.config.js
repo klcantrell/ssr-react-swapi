@@ -9,7 +9,7 @@ const setupAPI = () => {
     case 'development':
       return '"http://localhost:3000"';
     case 'production':
-      return '"https://acbg7strld.execute-api.us-east-2.amazonaws.com/dev"';
+      return '"https://swguesswho.kalalau-cantrell.me"';
   }
 };
 
