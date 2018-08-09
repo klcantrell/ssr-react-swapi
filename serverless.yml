@@ -5,6 +5,7 @@ provider:
   runtime: nodejs8.10
   stage: dev
   region: us-east-1
+  timeout: 150
 
 functions:
   app:
@@ -14,8 +15,39 @@ functions:
         cors: true
       - http: 'ANY {proxy+}'
         cors: true
+  data:
+    handler: data/server.handler
+    events:
+      - http: ANY /
+        cors: true
+      - http: 'ANY {proxy+}'
+        cors: true
+    vpc:
+      securityGroupIds:
+        - sg-0b1f741d6e2d90bf9
+      subnetIds:
+        - subnet-97d3d0ec 
+        - subnet-b59d53dd
+        - subnet-f86627b5
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - ec2:CreateNetworkInterface
+          - ec2:DescribeNetworkInterfaces
+          - ec2:DeleteNetworkInterface
+        Resource: "*"
+    environment:
+      RDS_CONN: ${ssm:ssrReactSwapiRdsConn}
+      NODE_ENV: ${opt:node_env}
+
 plugins:
   - serverless-domain-manager
+
+package:
+  include:
+    - server.js
+    - data/**
+    - env
 
 custom:
   customDomain:

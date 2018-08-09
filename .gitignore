@@ -3,3 +3,4 @@ public/
 server.js
 /*.jpg
 .serverless/
+.env
