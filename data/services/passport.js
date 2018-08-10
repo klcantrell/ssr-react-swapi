@@ -26,6 +26,28 @@ const localLogin = new LocalStrategy(localOptions, (email, password, done) => {
   });
 });
 
+const JwtStrategy = PassportJwt.Strategy;
+const ExtractJwt = PassportJwt.ExtractJwt;
+
+const jwtOptions = {
+  jwtFromRequest: ExtractJwt.fromHeader('authorization'),
+  secretOrKey: process.env.JWT_SECRET,
+};
+
+const jwtLogin = new JwtStrategy(jwtOptions, (payload, done) => {
+  User.findById(payload.sub)
+    .then(user => {
+      if (user) {
+        done(null, user);
+      } else {
+        done(null, false, { message: 'Unrecognized token' });
+      }
+    }).catch(err => {
+      done(err, false);
+    })
+});
+
 module.exports = passport => {
   passport.use('local-login', localLogin);
+  passport.use('jwt-login', jwtLogin);
 }
