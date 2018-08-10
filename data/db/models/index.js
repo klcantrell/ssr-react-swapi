@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const config = require('../config/config');
-const User = require('./todo');
-const Score = require('./score');
+const User = require('./user');
+// const Score = require('./score');
 
 const db = {};
 
@@ -14,7 +14,7 @@ if (config.use_aws) {
 
 const modelModules = [
   User,
-  Score,
+  // Score,
 ];
 
 modelModules.forEach((modelModule) => {

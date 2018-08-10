@@ -5,7 +5,8 @@
   "scripts": {
     "build:dev": "cross-env NODE_ENV=development webpack -w",
     "build:prod": "cross-env NODE_ENV=production webpack",
-    "server": "nodemon server.js"
+    "server": "nodemon server.js",
+    "db": "nodemon data/server.js"
   },
   "author": "",
   "license": "MIT",
@@ -47,6 +48,7 @@
     "webpack-node-externals": "^1.6.0"
   },
   "dependencies": {
+    "bcrypt": "^3.0.0",
     "core-js": "^2.5.7",
     "cors": "^2.8.4",
     "dotenv": "^6.0.0",
