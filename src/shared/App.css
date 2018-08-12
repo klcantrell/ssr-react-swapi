@@ -6,19 +6,28 @@
   font-size: 18px;
   font-family: 'Star Wars', fantasy;
   height: 100%;
+  box-sizing: border-box;
+}
+*,
+*::after,
+*::before {
+  box-sizing: inherit;
+}
+.column-layout {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+}
+.hidden {
+  display: none;
 }
 body {
   height: 100%;
   background: #0d5aa0;
   color: #fbfffe;
   margin: 0;
-}
-#app {
-  display: flex;
-  flex-flow: column;
-  align-items: center;
-  justify-content: flex-start;
-  text-align: center;
 }
 .game-header {
   font-size: 1.6rem;
@@ -109,6 +118,7 @@ body {
   box-shadow: -1px 1px 5px black;
 }
 .score {
+  width: 175px;
   position: absolute;
   top: 0;
   left: 0;
@@ -116,16 +126,24 @@ body {
   border: 1px solid rgb(50, 50, 50);
   border-radius: 5px;
   font-size: 0.75rem;
-  padding: 10px;
+  padding: 5px;
 }
 .score__header {
   margin: 0;
 }
 .score__message {
   font-family: Helvetica, sans-serif;
+  margin: 8px;
+}
+.score__form-item {
+  padding: 4px;
+  width: 90%;
+  margin-top: 5px;
+  border-radius: 2px;
 }
 .score button {
   font-family: 'Star Wars';
+  font-size: 0.6rem;
   outline: none;
   border-radius: 5px;
   box-shadow: -1px 1px 5px black;
@@ -145,5 +163,11 @@ body {
   }
   .next-btn {
     align-self: center;
+  }
+}
+@media screen and (max-width: 850px) {
+  .score {
+    position: static;
+    margin: auto;
   }
 }

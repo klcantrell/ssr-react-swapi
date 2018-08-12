@@ -71,7 +71,7 @@ app.get("/", (req, res, next) => {
             </head>
 
             <body>
-              <div id="app">${markup}</div>
+              <div id="app" class="column-layout">${markup}</div>
             </body>
           </html>
         `,
