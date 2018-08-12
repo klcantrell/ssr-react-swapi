@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Game from './Game';
+import Score from './Score';
 import { QUESTION_STATES } from './Question';
 import LoadingSpinner from './LoadingSpinner';
 import { reqResetGame } from '../browser/api';
@@ -14,7 +15,7 @@ class App extends Component {
     questionState: QUESTION_STATES.QUESTION,
   };
 
-  initializeState({correctCharacter, optionsData, questionImg }) {
+  initializeState({ correctCharacter, optionsData, questionImg }) {
     return {
       correctCharacter,
       optionsData,
@@ -73,6 +74,7 @@ class App extends Component {
 
     return (
       <React.Fragment>
+        <Score />
         <h1 className="game-header">May the force be with you</h1>
         {ajaxDataLoaded ? (
           <Game 

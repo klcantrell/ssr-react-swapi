@@ -18,9 +18,9 @@ functions:
   data:
     handler: data/server.handler
     events:
-      - http: ANY /
+      - http: ANY data
         cors: true
-      - http: 'ANY {proxy+}'
+      - http: 'ANY data/{proxy+}'
         cors: true
     vpc:
       securityGroupIds:
@@ -37,15 +37,16 @@ functions:
           - ec2:DeleteNetworkInterface
         Resource: "*"
     environment:
-      RDS_CONN: ${ssm:ssrReactSwapiRdsConn}
+      # RDS_CONN: ${ssm:ssrReactSwapiRdsConn}
       NODE_ENV: ${opt:node_env}
 
 plugins:
   - serverless-domain-manager
+  - serverless-offline
 
 package:
   include:
-    - server.js
+    - server
     - data/**
     - env
 

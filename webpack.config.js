@@ -14,6 +14,15 @@ const setupAPI = () => {
   }
 };
 
+const setupDB = () => {
+  switch(process.env.NODE_ENV) {
+    case 'development':
+      return '"http://localhost:3001"';
+    case 'production':
+      return '"https://swguesswho.kalalau-cantrell.me/data"';
+  }
+}
+
 const setupServerPublicPath = () => {
   switch(process.env.NODE_ENV) {
     case 'development':
@@ -52,6 +61,7 @@ const browserConfig = {
   plugins: [
     new webpack.DefinePlugin({
       __API_BASE__: setupAPI(),
+      __DB__: setupDB(),
     })
   ]
 };
@@ -84,6 +94,10 @@ const serverConfig = {
             ]
           }
         }
+      },
+      {
+        test: /\.(css)$/,
+        use: [ 'css-loader' ]
       },
       {
         test: /\.(png|jpg|gif)$/,

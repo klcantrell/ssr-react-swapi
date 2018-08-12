@@ -36,6 +36,7 @@
     "babel-preset-react": "^6.24.1",
     "compression-webpack-plugin": "^1.1.11",
     "cross-env": "^5.2.0",
+    "css-loader": "^1.0.0",
     "file-loader": "^1.1.11",
     "imagemin-webpack-plugin": "^2.1.5",
     "jimp": "^0.2.28",

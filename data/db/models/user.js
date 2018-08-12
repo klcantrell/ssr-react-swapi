@@ -8,6 +8,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     password: DataTypes.STRING
   }, {});
+  User.associate = models => {
+    User.hasOne(models.Score, {
+      foreignKey: 'userId',
+      as: 'score',
+    });
+  };
   User.beforeCreate((user, options) => {
     return bcrypt.genSalt(10)
       .then(salt => {

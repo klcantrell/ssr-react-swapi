@@ -2,14 +2,18 @@ const PassportJwt = require('passport-jwt');
 const LocalStrategy = require('passport-local');
 const db = require('../db/models');
 
-const { User } = db;
+const { User, Score } = db;
 
 const localOptions = { usernameField: 'email' };
 const localLogin = new LocalStrategy(localOptions, (email, password, done) => {
   User.findOne({
     where: {
       email,
-    }
+    },
+    include: [{
+      model: Score,
+      as: 'score',
+    }],
   }).then(user => {
     if (!user) {
       return done(null, false, { message: 'Invalid credentials' });
@@ -35,8 +39,12 @@ const jwtOptions = {
 };
 
 const jwtLogin = new JwtStrategy(jwtOptions, (payload, done) => {
-  User.findById(payload.sub)
-    .then(user => {
+  User.findById(payload.sub, {
+    include: [{
+      model: Score,
+      as: 'score',
+    }],
+  }).then(user => {
       if (user) {
         done(null, user);
       } else {

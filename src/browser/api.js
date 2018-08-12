@@ -10,4 +10,22 @@ const reqResetGame = currentCorrectCharacterIndex => {
     });
 };
 
-export { reqResetGame };
+const signup = (email, password) => {
+  const url = `${__DB__}/signup`;
+  const data = { email, password };
+  return fetch(url, {
+    method: 'POST',
+    body: JSON.stringify(data),
+  }).then(res => res.json());
+};
+
+const signin = (email, password) => {
+  const url = `${__DB__}/signin`;
+  const data = { email, password };
+  return fetch(url, {
+    method: 'POST',
+    body: JSON.stringify(data),
+  }).then(res => res.json());
+};
+
+export { reqResetGame, signup, signin };
