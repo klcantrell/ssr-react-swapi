@@ -13,6 +13,7 @@ class App extends Component {
     serverDataLoaded: false,
     ajaxDataLoaded: 'initial',
     questionState: QUESTION_STATES.QUESTION,
+    score: 0,
   };
 
   initializeState({ correctCharacter, optionsData, questionImg }) {
@@ -30,13 +31,20 @@ class App extends Component {
   }
 
   handleGuess = guess => {
-    const { correctCharacter } = this.state;
+    let newScore;
+    const { correctCharacter, score } = this.state;
     let questionState = guess === correctCharacter ?
       QUESTION_STATES.CORRECT :
       QUESTION_STATES.WRONG;
+    if (questionState === QUESTION_STATES.CORRECT) {
+      newScore = score + 1;
+    } else {
+      newScore = 0;
+    }
     this.setState({
       questionState,
-    })
+      score: newScore,
+    });
   }
 
   handleNext = () => {
@@ -70,11 +78,12 @@ class App extends Component {
       imgLoaded,
       questionImg,
       optionsData,
-      questionState } = this.state;
+      questionState,
+      score } = this.state;
 
     return (
       <React.Fragment>
-        <Score />
+        <Score score={score} />
         <h1 className="game-header">May the force be with you</h1>
         {ajaxDataLoaded ? (
           <Game 
