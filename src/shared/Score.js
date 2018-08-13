@@ -27,7 +27,7 @@ class Score extends Component {
     if (localStorage.getItem('token')) {
       getScore()
         .then(({user}) => {
-          this.props.updateScoreOnLogin(user.score);
+          this.props.updateScoreOnLoginLogout(user.score);
           this.setState({
             token: localStorage.getItem('token'),
             user,
@@ -49,7 +49,7 @@ class Score extends Component {
   }
   handleLoggedin = ({user, token}) => {
     localStorage.setItem('token', token);
-    this.props.updateScoreOnLogin(user.score)
+    this.props.updateScoreOnLoginLogout(user.score)
     this.setState({
       user,
       token,
@@ -65,6 +65,14 @@ class Score extends Component {
     }
     return signin(emailInput, passwordInput)
       .then(this.handleLoggedin);
+  }
+  handleLogout = () => {
+    localStorage.removeItem('token');
+    this.props.updateScoreOnLoginLogout(0);
+    this.setState({
+      token: undefined,
+      user: undefined,
+    });
   }
   showForm = ({isSigningUp}) => {
     this.setState({
@@ -88,7 +96,9 @@ class Score extends Component {
     return (
       <div className="score">
         <Message user={user} score={this.props.score} />
-        {token ? null : (
+        {token ? (
+          <button onClick={this.handleLogout}>Log out</button>
+        ) : (
           <React.Fragment>
             <form className={`${formVisible ? 'column-layout' : 'hidden'}`}>
               <input className="score__form-item" placeholder="email" type="email" value={emailInput} name="emailInput" onChange={this.updateField} />

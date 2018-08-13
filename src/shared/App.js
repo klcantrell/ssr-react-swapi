@@ -30,7 +30,7 @@ class App extends Component {
     })
   }
 
-  updateScoreOnLogin = score => {
+  updateScoreOnLoginLogout = score => {
     this.setState({
       score,
     });
@@ -89,7 +89,7 @@ class App extends Component {
 
     return (
       <React.Fragment>
-        <Score score={score} updateScoreOnLogin={this.updateScoreOnLogin} />
+        <Score score={score} updateScoreOnLoginLogout={this.updateScoreOnLoginLogout} />
         <h1 className="game-header">May the force be with you</h1>
         {ajaxDataLoaded ? (
           <Game 
