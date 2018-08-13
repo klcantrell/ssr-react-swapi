@@ -54,8 +54,13 @@ const updateScore = (req, res, next) => {
     })
 };
 
+const getScore = (req, res, next) => {
+  res.send({ user: { email: req.user.email, score: req.user.score.value } });
+}
+
 module.exports = {
   signup,
   signin,
   updateScore,
+  getScore,
 };
