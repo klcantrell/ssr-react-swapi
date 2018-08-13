@@ -1,5 +1,6 @@
 const passport = require('passport');
 const passportService = require('../services/passport');
+const jwt = require('jwt-simple');
 
 passportService(passport);
 
@@ -38,7 +39,12 @@ const requireSignin = (req, res, next) => {
 };
 
 const requireAuthHeader = (req, res, next) => {
-  if (req && req.headers.authorization !== 'null') {
+  try {
+    jwt.decode(req.headers.authorization, process.env.JWT_SECRET);
+  } catch(e) {
+    return res.status(422).send({error: 'You need to be logged in for that'});
+  }
+  if (req && req.headers.authorization && req.headers.authorization !== 'null') {
     return next();
   }
   return res.status(422).send({error: 'You need to be logged in for that'});
