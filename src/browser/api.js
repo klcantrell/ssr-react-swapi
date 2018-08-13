@@ -28,4 +28,16 @@ const signin = (email, password) => {
   }).then(res => res.json());
 };
 
-export { reqResetGame, signup, signin };
+const updateScore = score => {
+  const url = `${__DB__}/score`;
+  const data = { score };
+  return fetch(url, {
+    method: 'PUT',
+    headers: {
+      authorization: localStorage.getItem('token'),
+    },
+    body: JSON.stringify(data),
+  });
+}
+
+export { reqResetGame, signup, signin, updateScore };
