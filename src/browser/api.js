@@ -38,6 +38,15 @@ const updateScore = score => {
     },
     body: JSON.stringify(data),
   });
-}
+};
 
-export { reqResetGame, signup, signin, updateScore };
+const getScore = () => {
+  const url = `${__DB__}/score`;
+  return fetch(url, {
+    headers: {
+      authorization: localStorage.getItem('token'),
+    },
+  }).then(res => res.json());
+};
+
+export { reqResetGame, signup, signin, updateScore, getScore };

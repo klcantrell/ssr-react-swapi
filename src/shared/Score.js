@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { signup, signin, updateScore } from '../browser/api';
+import { signup, signin, updateScore, getScore } from '../browser/api';
 
 const Message = ({user, score}) => {
   return (
@@ -23,6 +23,18 @@ class Score extends Component {
     formVisible: false,
     isSigningUp: true,
   };
+  componentDidMount() {
+    if (localStorage.getItem('token')) {
+      getScore()
+        .then(({user}) => {
+          this.props.updateScoreOnLogin(user.score);
+          this.setState({
+            token: localStorage.getItem('token'),
+            user,
+          });
+        });
+    }
+  }
   componentDidUpdate(prevProps) {
     if (this.props.score !== prevProps.score && this.state.token) {
       updateScore(this.props.score);
@@ -37,6 +49,7 @@ class Score extends Component {
   }
   handleLoggedin = ({user, token}) => {
     localStorage.setItem('token', token);
+    this.props.updateScoreOnLogin(user.score)
     this.setState({
       user,
       token,
