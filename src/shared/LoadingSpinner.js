@@ -1,5 +1,5 @@
 import React from 'react';
 
-const LoadingSpinner = () => <div className="loading-spinner"></div>;
+const LoadingSpinner = ({style}) => <div className="loading-spinner" style={style}></div>;
 
 export default LoadingSpinner;

@@ -1,14 +1,19 @@
 import React, { Component } from 'react';
+import LoadingSpinner from './LoadingSpinner';
 import { signup, signin, updateScore, getScore } from '../browser/api';
 
-const Message = ({user, score}) => {
+const Message = ({user, score, errorMessage, awaitingResponse}) => {
   return (
     <React.Fragment>
       <h3 className="score__header">{`Streak: ${score}`}</h3>
-      {user ? (
-        <p className="score__message">Signed in as: <strong>{user.email}</strong></p>
+      {awaitingResponse ? (
+        <LoadingSpinner style={{ width: 30, height: 30, margin: '10px auto' }} />
       ) : (
-        <p className="score__message">Sign up to save your streak</p>
+        user ? (
+          <p className="score__message">Signed in as: <strong>{user.email}</strong></p>
+        ) : (
+          <p className="score__message">{errorMessage || 'Sign up to save your streak'}</p>
+        )
       )}
     </React.Fragment>
   );
@@ -22,6 +27,8 @@ class Score extends Component {
     passwordInput: '',
     formVisible: false,
     isSigningUp: true,
+    errorMessage: '',
+    awaitingResponse: false,
   };
   componentDidMount() {
     if (localStorage.getItem('token')) {
@@ -35,9 +42,14 @@ class Score extends Component {
         });
     }
   }
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     if (this.props.score !== prevProps.score && this.state.token) {
       updateScore(this.props.score);
+    }
+    if (this.state.errorMessage && prevState.errorMessage) {
+      this.setState({
+        errorMessage: '',
+      });
     }
   }
   resetForm() {
@@ -47,18 +59,28 @@ class Score extends Component {
       formVisible: false,
     });
   }
-  handleLoggedin = ({user, token}) => {
+  handleLoggedin = ({user, token, error}) => {
+    if (error) {
+      return this.setState({
+        errorMessage: error,
+        awaitingResponse: false,
+      });
+    }
     localStorage.setItem('token', token);
     this.props.updateScoreOnLoginLogout(user.score)
     this.setState({
       user,
       token,
+      awaitingResponse: false,
     });
   }
   handleSubmit = e => {
     e.preventDefault();
     const { emailInput, passwordInput, isSigningUp } = this.state;
     this.resetForm();
+    this.setState({
+      awaitingResponse: true,
+    });
     if (isSigningUp) {
       return signup(emailInput, passwordInput)
         .then(this.handleLoggedin);
@@ -92,17 +114,44 @@ class Score extends Component {
     });
   }
   render() {
-    const { user, emailInput, passwordInput, formVisible, isSigningUp, token } = this.state;
+    const { 
+      user,
+      emailInput,
+      passwordInput,
+      formVisible,
+      isSigningUp,
+      token,
+      errorMessage,
+      awaitingResponse } = this.state;
     return (
       <div className="score">
-        <Message user={user} score={this.props.score} />
+        <Message 
+          user={user}
+          score={this.props.score}
+          errorMessage={errorMessage}
+          awaitingResponse={awaitingResponse}
+        />
         {token ? (
           <button onClick={this.handleLogout}>Log out</button>
         ) : (
           <React.Fragment>
             <form className={`${formVisible ? 'column-layout' : 'hidden'}`}>
-              <input className="score__form-item" placeholder="email" type="email" value={emailInput} name="emailInput" onChange={this.updateField} />
-              <input className="score__form-item" placeholder="password" type="password" value={passwordInput} name="passwordInput" onChange={this.updateField} />
+              <input 
+                className="score__form-item"
+                placeholder="email"
+                type="email"
+                value={emailInput}
+                name="emailInput"
+                onChange={this.updateField}
+              />
+              <input 
+                className="score__form-item"
+                placeholder="password"
+                type="password"
+                value={passwordInput}
+                name="passwordInput"
+                onChange={this.updateField}
+              />
               <div className="score__form-item">
                 <button type="button" onClick={this.hideForm}>
                   <svg width="15" height="12" viewBox="0 0 492 492">
