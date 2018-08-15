@@ -24,11 +24,14 @@ functions:
         cors: true
     vpc:
       securityGroupIds:
-        - sg-0b1f741d6e2d90bf9
+        - sg-093754acc09e620b8
       subnetIds:
-        - subnet-97d3d0ec 
-        - subnet-b59d53dd
-        - subnet-f86627b5
+        - subnet-5b87e411
+        - subnet-34f12f53
+        - subnet-d79209d8
+        - subnet-9f6488a1
+        - subnet-48924d14
+        - subnet-74a47d5a
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -37,7 +40,7 @@ functions:
           - ec2:DeleteNetworkInterface
         Resource: "*"
     environment:
-      # RDS_CONN: ${ssm:ssrReactSwapiRdsConn}
+      PGRDS_CONN: ${ssm:ssrReactSwapiRdsConn}
       NODE_ENV: ${opt:node_env}
 
 plugins:

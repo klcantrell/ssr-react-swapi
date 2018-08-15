@@ -11,7 +11,7 @@ const config = {
     dialect: "postgres"
   },
   production: {
-    use_aws: process.env.RDS_CONN,
+    use_aws: process.env.PGRDS_CONN,
     pool: {
       idle: 50000,
     },

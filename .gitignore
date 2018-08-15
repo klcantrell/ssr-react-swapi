@@ -4,3 +4,4 @@ public/
 /*.jpg
 .serverless/
 .env
+/*.pem

@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt-node');
 
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
@@ -15,26 +15,32 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
   User.beforeCreate((user, options) => {
-    return bcrypt.genSalt(10)
-      .then(salt => {
-        // needed to return the promise here for hook to fire
-        return bcrypt.hash(user.password, salt)
-          .then(hash => {
-            user.password = hash;
-          }).catch(err => {
-            return sequelize.Promise.reject(err);
-          })
-      }).catch(err => {
-        return sequelize.Promise.reject(err);
-      })
+    const p = new Promise((resolve, reject) => {
+      bcrypt.genSalt(10, (err, salt) => {
+        if (err) {
+          return reject(err);
+        }
+        bcrypt.hash(user.password, salt, null, (err, hash) => {
+          if (err) {
+            return reject(err);
+          }
+          resolve(hash);
+        });
+      });
+    });
+    return p.then(hash => {
+      user.password = hash;
+    });
   });
   User.prototype.validPassword = function(password) {
-    return bcrypt.compare(password, this.password)
-      .then(res => {
-        return res;
-      }).catch(err => {
-        return err;
+    return new Promise((resolve, reject) => {
+      bcrypt.compare(password, this.password, (err, res) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(res);
       });
+    });
   };
   return User;
 };
