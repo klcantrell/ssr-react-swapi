@@ -11,8 +11,8 @@ app.use(cors());
 app.use(express.json({type: '*/*'}));
 app.use('/data', dataRoutes);
 
-// app.listen(PORT, () => {
-//   console.log('DB server has started');
-// });
+app.listen(PORT, () => {
+  console.log('DB server has started');
+});
 
 module.exports.handler = serverless(app);

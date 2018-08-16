@@ -10,9 +10,9 @@ const reqResetGame = currentCorrectCharacterIndex => {
     });
 };
 
-const signup = (email, password) => {
+const signup = (email, password, score) => {
   const url = `${__DB__}/signup`;
-  const data = { email, password };
+  const data = { email, password, score };
   return fetch(url, {
     method: 'POST',
     body: JSON.stringify(data),

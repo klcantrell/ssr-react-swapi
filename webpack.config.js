@@ -17,7 +17,7 @@ const setupAPI = () => {
 const setupDB = () => {
   switch(process.env.NODE_ENV) {
     case 'development':
-      return '"http://localhost:3001"';
+      return '"http://localhost:3001/data"';
     case 'production':
       return '"https://swguesswho.kalalau-cantrell.me/data"';
   }

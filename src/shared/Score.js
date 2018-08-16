@@ -77,12 +77,13 @@ class Score extends Component {
   handleSubmit = e => {
     e.preventDefault();
     const { emailInput, passwordInput, isSigningUp } = this.state;
+    const { score } = this.props;
     this.resetForm();
     this.setState({
       awaitingResponse: true,
     });
     if (isSigningUp) {
-      return signup(emailInput, passwordInput)
+      return signup(emailInput, passwordInput, score)
         .then(this.handleLoggedin);
     }
     return signin(emailInput, passwordInput)

@@ -9,8 +9,7 @@ const tokenForUser = user => {
 }
 
 const signup = (req, res, next) => {
-  console.log(req);
-  const { email, password } = req.body;
+  const { email, password, score } = req.body;
   if (!email || !password) {
     return res.status(422).send({ error: 'You must provide an email and password' });
   }
@@ -28,6 +27,7 @@ const signup = (req, res, next) => {
     }).then(user => {
       Score.create({
         userId: user.id,
+        value: score || 0,
       }).then(score => {
         res.send({ token: tokenForUser(user), user:{ email: user.email, score: score.value }});
       })
