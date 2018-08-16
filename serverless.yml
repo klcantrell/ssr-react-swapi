@@ -11,16 +11,24 @@ functions:
   app:
     handler: server.handler
     events:
-      - http: ANY /
+      - http:
+          path: /
+          method: ANY
         cors: true
-      - http: 'ANY {proxy+}'
+      - http:
+          path: /api/{proxy+}
+          method: ANY
         cors: true
   data:
     handler: data/server.handler
     events:
-      - http: ANY data
+      - http:
+          path: /data
+          method: ANY
         cors: true
-      - http: 'ANY data/{proxy+}'
+      - http: 
+          path: /data/{proxy+}
+          method: ANY
         cors: true
     vpc:
       securityGroupIds:
