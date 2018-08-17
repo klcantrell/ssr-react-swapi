@@ -31,7 +31,7 @@ class Score extends Component {
     awaitingResponse: false,
   };
   componentDidMount() {
-    if (localStorage.getItem('token')) {
+    if (localStorage.getItem('token') && localStorage.getItem('token') !== 'undefined') {
       getScore()
         .then(({user}) => {
           this.props.updateScoreOnLoginLogout(user.score);

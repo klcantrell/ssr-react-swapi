@@ -46,7 +46,7 @@ const INDEX_TO_IMGDATA_MAP = {
 
 const app = express();
 
-app.use(express.static("public"));
+// app.use(express.static("public"));
 
 app.get("/", (req, res, next) => {
   const correctCharacter = CHARACTER_INDICES[randomInt(CHARACTER_INDICES.length - 1)];
@@ -110,8 +110,8 @@ app.get("/", (req, res, next) => {
       .catch(next);
   });
 
-app.listen(3000, () => {
-  console.log('App server started');
-});
+// app.listen(3000, () => {
+//   console.log('App server started');
+// });
 
 module.exports.handler = serverless(app);

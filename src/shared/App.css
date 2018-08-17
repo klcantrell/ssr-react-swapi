@@ -147,6 +147,7 @@ body {
   outline: none;
   border-radius: 5px;
   box-shadow: -1px 1px 5px black;
+  background-color: rgb(221, 221, 221);
   margin: 0 5px;
 }
 @keyframes spin {
