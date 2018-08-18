@@ -10,7 +10,7 @@ const setupAPI = () => {
     case 'development':
       return '"http://localhost:3000"';
     case 'production':
-      return '"https://swguesswho.kalalau-cantrell.me/"';
+      return '"https://swguesswho.kalalau-cantrell.me"';
   }
 };
 
