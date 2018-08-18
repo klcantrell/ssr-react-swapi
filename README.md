@@ -15,3 +15,6 @@ Tech Highlights:
 * Used **AWS Lambda** running **Node** to handle authentication with **JWTs**
 * Used **React** for rendering the UI and managing app state
 * Used **AWS RDS** running **PostgreSQL** to persist the user's streak if they choose to sign up
+
+#### Visit the site!
+#### https://swguesswho.kalalau-cantrell.me/
