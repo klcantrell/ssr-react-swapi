@@ -2,11 +2,11 @@
 
 ### Guess the random character and see how high you can get your streak of correct guesses.
 
-This is a React app that challenges the user to guess the name of a random Star Wars character.  Whether right or wrong, the app lets the user know then sends another random character.  For a snappy initial load, the app gets server-side rendered with the first random character.  Every subsequent random character is fetched with AJAX and client-side rendered.  The app keeps track of the user's streak of correct guesses.  Should the user desire, they can sign up for an account to keep track of their current streak.
+This is a React app that challenges the user to guess the name of random Star Wars characters.  For a snappy initial load, the app gets server-side rendered with the first random character.  The app keeps track of the user's streak of correct guesses, and should the user desire they can sign up for an account to keep track of their current streak.
 
 User can:
 
-* Play the game and try to select the name of the correct displayed in the random image
+* Play the game and try to select the name of the character displayed in the random image
 * Sign up for an account to save their streak score
 
 Tech Highlights:
