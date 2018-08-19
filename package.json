@@ -5,8 +5,8 @@
   "scripts": {
     "build:dev": "cross-env NODE_ENV=development webpack -w",
     "build:prod": "cross-env NODE_ENV=production webpack",
-    "server": "nodemon server.js",
-    "db": "nodemon data/server.js"
+    "server": "cross-env NODE_ENV=development nodemon server.js",
+    "db": "cross-env NODE_ENV=development nodemon data/server.js"
   },
   "author": "",
   "license": "MIT",

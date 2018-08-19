@@ -150,6 +150,15 @@ body {
   background-color: rgb(221, 221, 221);
   margin: 0 5px;
 }
+.k-tag {
+  position: absolute;
+  font-family: Helvetica, sans-serif;
+  color: black;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+}
 @keyframes spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(359deg); }
@@ -164,6 +173,10 @@ body {
   }
   .next-btn {
     align-self: center;
+  }
+  .k-tag {
+    position: static;
+    justify-content: center;
   }
 }
 @media screen and (max-width: 850px) {
