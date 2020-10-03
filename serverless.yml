@@ -2,7 +2,7 @@ service: ssr-react-swapi-service
 
 provider:
   name: aws
-  runtime: nodejs8.10
+  runtime: nodejs12.x
   stage: dev
   region: us-east-1
   timeout: 150
@@ -26,7 +26,7 @@ functions:
           path: /data
           method: ANY
         cors: true
-      - http: 
+      - http:
           path: /data/{proxy+}
           method: ANY
         cors: true
@@ -46,7 +46,7 @@ functions:
           - ec2:CreateNetworkInterface
           - ec2:DescribeNetworkInterfaces
           - ec2:DeleteNetworkInterface
-        Resource: "*"
+        Resource: '*'
     environment:
       PGRDS_CONN: ${ssm:ssrReactSwapiRdsConn}
       NODE_ENV: ${opt:node_env}
